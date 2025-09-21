@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - {{ portfolio.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">
+                    Hi, I'm <span class="text-warning">{{ portfolio.name|default:"Your Name" }}</span>
+                </h1>
+                <h2 class="h3 mb-4 text-light">
+                    {{ portfolio.title|default:"Full Stack Developer" }}
+                </h2>
+                <p class="lead mb-4">
+                    {{ portfolio.bio|default:"I'm a passionate developer who loves creating amazing web applications and solving complex problems with code." }}
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'projects' %}" class="btn btn-warning btn-lg px-4">
+                        View My Work <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg px-4">
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                {% if portfolio.profile_image %}
+                    <img src="{{ portfolio.profile_image.url }}" alt="{{ portfolio.name }}" class="profile-image img-fluid shadow-lg">
+                {% else %}
+                    <img src="{% static 'image/developer.jpeg' %}" alt="{{ portfolio.name|default:'Developer' }}" class="profile-image img-fluid shadow-lg">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Projects Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Featured Projects</h2>
+                <p class="lead text-muted">Some of my recent work that I'm particularly proud of</p>
+            </div>
+        </div>
+        
+        {% if featured_projects %}
+            <div class="row g-4">
+                {% for project in featured_projects %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 shadow-sm project-card">
+                            {% if project.image %}
+                                <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}" style="height: 250px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ project.title }}</h5>
+                                <p class="card-text text-muted flex-grow-1">{{ project.short_description }}</p>
+                                <div class="mb-3">
+                                    {% for tech in project.technologies.all %}
+                                        <span class="badge me-1" style="background-color: {{ tech.color }};">{{ tech.name }}</span>
+                                    {% endfor %}
+                                </div>
+                                <div class="d-flex gap-2">
+                                    {% if project.live_url %}
+                                        <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-external-link-alt me-1"></i> Live Demo
+                                        </a>
+                                    {% endif %}
+                                    {% if project.source_url %}
+                                        <a href="{{ project.source_url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                            <i class="fab fa-github me-1"></i> Source
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-code fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No featured projects yet</h4>
+                <p class="text-muted">Check back soon for amazing projects!</p>
+            </div>
+        {% endif %}
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'projects' %}" class="btn btn-outline-primary btn-lg">
+                View All Projects <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Preview Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Skills & Technologies</h2>
+                <p class="lead text-muted">Technologies I work with</p>
+            </div>
+        </div>
+        
+        <div class="row g-3">
+            {% for skill in skills|slice:":8" %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="skill-item text-center p-3 bg-white rounded shadow-sm">
+                        <h6 class="mb-2">{{ skill.name }}</h6>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ skill.proficiency }}%"></div>
+                        </div>
+                        <small class="text-muted">{{ skill.proficiency }}%</small>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">Skills will be displayed here once added through the admin panel.</p>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="{% url 'about' %}" class="btn btn-outline-primary">
+                Learn More About Me <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - {{ portfolio.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<!-- About Hero Section -->
+<section class="bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">About Me</h1>
+                <p class="lead">{{ portfolio.bio|default:"Learn more about my background, skills, and experience." }}</p>
+            </div>
+            <div class="col-lg-6 text-center">
+                {% if portfolio.profile_image %}
+                    <img src="{{ portfolio.profile_image.url }}" alt="{{ portfolio.name }}" class="profile-image img-fluid shadow-lg">
+                {% else %}
+                    <img src="{% static 'image/developer.jpeg' %}" alt="{{ portfolio.name|default:'Developer' }}" class="profile-image img-fluid shadow-lg">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="display-5 fw-bold">{{ portfolio.name|default:"Your Name" }}</h2>
+                    <h3 class="h4 text-muted mb-4">{{ portfolio.title|default:"Full Stack Developer" }}</h3>
+                    <p class="lead">{{ portfolio.bio|default:"I'm a passionate developer with a love for creating innovative solutions and solving complex problems." }}</p>
+                    
+                    {% if portfolio.resume %}
+                        <a href="{{ portfolio.resume.url }}" class="btn btn-primary btn-lg" download>
+                            <i class="fas fa-download me-2"></i>Download Resume
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Skills & Technologies</h2>
+                <p class="lead text-muted">My technical expertise and proficiency levels</p>
+            </div>
+        </div>
+        
+        {% if skill_categories %}
+            {% for category, skills in skill_categories.items %}
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <h3 class="h4 mb-4 text-capitalize">{{ category|title }}</h3>
+                        <div class="row g-3">
+                            {% for skill in skills %}
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="skill-card p-4 bg-white rounded shadow-sm">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="mb-0">{{ skill.name }}</h6>
+                                            <span class="text-muted">{{ skill.proficiency }}%</span>
+                                        </div>
+                                        <div class="progress" style="height: 10px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ skill.proficiency }}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-code fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">Skills will be displayed here</h4>
+                <p class="text-muted">Add your skills through the admin panel to see them here.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Certificates Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Certificates</h2>
+                <p class="lead text-muted">Professional certifications and achievements</p>
+            </div>
+        </div>
+        
+        {% if certificates %}
+            <div class="row g-4">
+                {% for certificate in certificates %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 shadow-sm certificate-card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ certificate.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ certificate.issuing_organization }}</h6>
+                                <p class="card-text text-muted">{{ certificate.issue_date|date:"F Y" }}</p>
+                                {% if certificate.description %}
+                                    <p class="card-text">{{ certificate.description }}</p>
+                                {% endif %}
+                                <div class="d-flex gap-2">
+                                    {% if certificate.certificate_file %}
+                                        <a href="{{ certificate.certificate_file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-file-pdf me-1"></i> View Certificate
+                                        </a>
+                                    {% endif %}
+                                    {% if certificate.certificate_url %}
+                                        <a href="{{ certificate.certificate_url }}" target="_blank" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-external-link-alt me-1"></i> Verify
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-certificate fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No certificates yet</h4>
+                <p class="text-muted">Add your certificates through the admin panel to display them here.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Recommendations Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="display-5 fw-bold">Recommendations</h2>
+                <p class="lead text-muted">What others say about my work</p>
+            </div>
+        </div>
+        
+        {% if recommendations %}
+            <div class="row g-4">
+                {% for recommendation in recommendations %}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 shadow-sm recommendation-card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ recommendation.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ recommendation.recommender_name }}</h6>
+                                <p class="card-text text-muted">{{ recommendation.recommender_position }} at {{ recommendation.recommender_company }}</p>
+                                {% if recommendation.description %}
+                                    <p class="card-text">{{ recommendation.description }}</p>
+                                {% endif %}
+                                {% if recommendation.letter_file %}
+                                    <a href="{{ recommendation.letter_file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-file-pdf me-1"></i> View Letter
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-quote-left fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No recommendations yet</h4>
+                <p class="text-muted">Add recommendation letters through the admin panel to display them here.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

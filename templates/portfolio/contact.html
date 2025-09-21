@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact - {{ portfolio.name|default:"Portfolio" }}{% endblock %}
+
+{% block content %}
+<!-- Contact Hero Section -->
+<section class="bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3">Get In Touch</h1>
+                <p class="lead">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h2 class="h3 mb-4 text-center">Send me a message</h2>
+                        
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.name.errors %}
+                                                <div>{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form.email }}
+                                    {% if form.email.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {% for error in form.email.errors %}
+                                                <div>{{ error }}</div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                {{ form.message }}
+                                {% if form.message.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.message.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">
+                                    <i class="fas fa-paper-plane me-2"></i> Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info Section -->
+{% if portfolio %}
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="row g-4">
+                    <div class="col-md-4 text-center">
+                        <div class="contact-info-item">
+                            <i class="fas fa-envelope fa-2x text-primary mb-3"></i>
+                            <h5>Email</h5>
+                            <p class="text-muted">{{ portfolio.email }}</p>
+                        </div>
+                    </div>
+                    {% if portfolio.phone %}
+                    <div class="col-md-4 text-center">
+                        <div class="contact-info-item">
+                            <i class="fas fa-phone fa-2x text-primary mb-3"></i>
+                            <h5>Phone</h5>
+                            <p class="text-muted">{{ portfolio.phone }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if portfolio.location %}
+                    <div class="col-md-4 text-center">
+                        <div class="contact-info-item">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary mb-3"></i>
+                            <h5>Location</h5>
+                            <p class="text-muted">{{ portfolio.location }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Social Links Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="h3 mb-4">Connect with me</h2>
+                <div class="social-links">
+                    <a href="#" class="btn btn-outline-primary btn-lg me-3 mb-3">
+                        <i class="fab fa-linkedin me-2"></i> LinkedIn
+                    </a>
+                    <a href="#" class="btn btn-outline-dark btn-lg me-3 mb-3">
+                        <i class="fab fa-github me-2"></i> GitHub
+                    </a>
+                    <a href="#" class="btn btn-outline-info btn-lg me-3 mb-3">
+                        <i class="fab fa-twitter me-2"></i> Twitter
+                    </a>
+                    <a href="#" class="btn btn-outline-danger btn-lg mb-3">
+                        <i class="fab fa-instagram me-2"></i> Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
